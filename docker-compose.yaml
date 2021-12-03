@@ -3,8 +3,8 @@ services:
   mongodb:
     build: ./Data
     container_name: mongodb
-    #ports:
-    #- "27017:27017"
+    ports:
+    - "27017:27017"
     restart: unless-stopped
   backend:
     build: ./Backend

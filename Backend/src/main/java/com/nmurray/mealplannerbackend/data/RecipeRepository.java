@@ -5,7 +5,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import java.time.LocalTime;
 import java.util.List;
 
-public interface RecipeRepository extends MongoRepository<Recipe, String> {
+public interface RecipeRepository extends MealRepository {
 
     public Recipe getRecipeByName(String name);
 

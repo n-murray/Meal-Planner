@@ -1,5 +1,6 @@
 package com.nmurray.mealplannerbackend.rest;
 
+import com.nmurray.mealplannerbackend.data.Meal;
 import com.nmurray.mealplannerbackend.data.Recipe;
 import com.nmurray.mealplannerbackend.data.RecipeRepository;
 import com.nmurray.mealplannerbackend.enums.Messages;
@@ -21,7 +22,13 @@ public class RecipeResource {
 
     @GetMapping()
     public ResponseEntity<?> getAllRecipes() {
-        List<Recipe> recipesList = repository.findAll();
+        List<Meal> recipesList = repository.findAll();
+        return new ResponseEntity<>(recipesList, HttpStatus.OK);
+    }
+
+    @GetMapping("/{name}")
+    public ResponseEntity<?> getRecipe(@PathVariable String name) {
+        Meal recipesList = repository.getMealByName(name);
         return new ResponseEntity<>(recipesList, HttpStatus.OK);
     }
 

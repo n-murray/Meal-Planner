@@ -23,9 +23,9 @@ public class MealPlannerBackendApplication {
 
     public static void main(String[] args) {
         ApplicationContext context = SpringApplication.run(MealPlannerBackendApplication.class, args);
-        RecipeRepository repo = context.getBean(RecipeRepository.class);
-        repo.save(new Recipe( "Burgers and Chips", LocalTime.of(0,30), Arrays.asList( "Mince", "Buns", "Potatoes"), Arrays.asList("Make patties from mince", "Cut potatoes into chips", "Cook", "Assemble burgers")));
-        repo.save(new Recipe( "Chicken Curry", LocalTime.of(0,45), Arrays.asList( "Chicken", "Sauce", "Rice"), Arrays.asList("Prepare chicken", "Make sauce", "Add ingredients", "Cook rice")));
+        //RecipeRepository repo = context.getBean(RecipeRepository.class);
+        //repo.save(new Recipe( "Burgers and Chips", LocalTime.of(0,30), Arrays.asList( "Mince", "Buns", "Potatoes"), Arrays.asList("Make patties from mince", "Cut potatoes into chips", "Cook", "Assemble burgers")));
+        //repo.save(new Recipe( "Chicken Curry", LocalTime.of(0,45), Arrays.asList( "Chicken", "Sauce", "Rice"), Arrays.asList("Prepare chicken", "Make sauce", "Add ingredients", "Cook rice")));
     }
 
     @Bean

@@ -2,21 +2,10 @@ package com.nmurray.mealplannerbackend.data;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.annotation.Id;
 import java.time.LocalTime;
 import java.util.List;
 
-public class Recipe {
-
-    @Id
-    @Getter
-    @Setter
-    private String id;
-
-    // The name of the recipe
-    @Getter
-    @Setter
-    private String name;
+public class Recipe extends Meal {
 
     // The time it takes to prepare this recipe
     @Getter
@@ -39,4 +28,6 @@ public class Recipe {
         setIngredients(ingredients);
         setPreparationSteps(preparationSteps);
     }
+
+    public Recipe() {}
 }
