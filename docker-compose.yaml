@@ -1,0 +1,15 @@
+version: "3.8"
+services:
+  mongodb:
+    build: ./Data
+    container_name: mongodb
+    #ports:
+    #- "27017:27017"
+    restart: unless-stopped
+  backend:
+    build: ./Backend
+    container_name: api
+    ports:
+      - "1405:1405"
+    depends_on:
+      - mongodb
