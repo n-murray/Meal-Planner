@@ -1,15 +1,15 @@
 package com.nmurray.mealplannerbackend.rest
 
 import com.nmurray.mealplannerbackend.MealPlannerBackendApplication
-import com.nmurray.mealplannerbackend.data.Recipe
-import com.nmurray.mealplannerbackend.data.RecipeRepository
+import com.nmurray.mealplannerbackend.data.models.Recipe
+import com.nmurray.mealplannerbackend.data.repos.RecipeRepository
 import com.nmurray.mealplannerbackend.enums.Messages
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import spock.lang.Shared
 import spock.lang.Specification
 
-import java.time.LocalTime;
+import java.time.LocalTime
 
 @SpringBootTest(classes = MealPlannerBackendApplication.class)
 class RecipeResourceTest extends Specification {
@@ -19,7 +19,7 @@ class RecipeResourceTest extends Specification {
     @Shared
     def recipe2 = new Recipe( "Chicken Curry", LocalTime.of(0,45), Arrays.asList( "Chicken", "Sauce", "Rice"), Arrays.asList("Prepare chicken", "Make sauce", "Add ingredients", "Cook rice"))
     @Shared
-    def recipeList = (List<Recipe>) Arrays.asList(recipe1, recipe2);
+    def recipeList = (List<Recipe>) Arrays.asList(recipe1, recipe2)
     @Shared
     def bad_recipe = new Recipe( "", LocalTime.of(0,45), Arrays.asList( "Chicken", "Sauce", "Rice"), Arrays.asList("Prepare chicken", "Make sauce", "Add ingredients", "Cook rice"))
 
@@ -44,6 +44,16 @@ class RecipeResourceTest extends Specification {
             newRecipe  | statusCode | result
             recipe1    | 201        | recipe1
             bad_recipe | 400        | Messages.INVALID_RECIPE.getLabel()
+    }
+
+    def "When a new recipe is received with an existing name it should not be persisted" () {
+        given: "A recipe with an existing name"
+            repo.save(recipe1)
+        when: "The saveRecipe endpoint is called"
+        def response = recipeResource.saveRecipe(recipe1)
+        then: "The recipe is persisted and the correct response is received"
+        response.statusCodeValue == 400
+        response.body == Messages.INVALID_NAME.getLabel()
     }
 
     def "When get all recipes is called, all recipes should be returned" () {

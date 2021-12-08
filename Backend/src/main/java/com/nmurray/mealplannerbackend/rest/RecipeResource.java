@@ -1,8 +1,8 @@
 package com.nmurray.mealplannerbackend.rest;
 
-import com.nmurray.mealplannerbackend.data.Meal;
-import com.nmurray.mealplannerbackend.data.Recipe;
-import com.nmurray.mealplannerbackend.data.RecipeRepository;
+import com.nmurray.mealplannerbackend.common.validator.Validator;
+import com.nmurray.mealplannerbackend.data.models.Recipe;
+import com.nmurray.mealplannerbackend.data.repos.RecipeRepository;
 import com.nmurray.mealplannerbackend.enums.Messages;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,23 +22,24 @@ public class RecipeResource {
 
     @GetMapping()
     public ResponseEntity<?> getAllRecipes() {
-        List<Meal> recipesList = repository.findAll();
+        List<Recipe> recipesList = repository.findAll();
         return new ResponseEntity<>(recipesList, HttpStatus.OK);
     }
 
     @GetMapping("/{name}")
     public ResponseEntity<?> getRecipe(@PathVariable String name) {
-        Meal recipesList = repository.getMealByName(name);
-        return new ResponseEntity<>(recipesList, HttpStatus.OK);
+        Recipe recipe = repository.getRecipeByName(name);
+        return new ResponseEntity<>(recipe, HttpStatus.OK);
     }
 
     @PostMapping()
     public ResponseEntity<?> saveRecipe( @RequestBody Recipe newRecipe) {
-        if(validateRecipe(newRecipe)) {
+        String validation = validateRecipe(newRecipe);
+        if(validation.equals("valid")) {
             Recipe recipe = repository.save(newRecipe);
             return new ResponseEntity<>(recipe, HttpStatus.CREATED);
         } else {
-            return new ResponseEntity<>(Messages.INVALID_RECIPE.getLabel(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(validation, HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -50,37 +51,24 @@ public class RecipeResource {
         } catch(IllegalArgumentException ie) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-
     }
 
-    private boolean validateRecipe( Recipe newRecipe ) {
-        if(!checkString(newRecipe.getName())) {
-            return false;
-        } else if( newRecipe.getIngredients().size() == 0 || !checkList(newRecipe.getIngredients())) {
-            return false;
-        } else if( newRecipe.getPreparationSteps().size() == 0 || !checkList(newRecipe.getPreparationSteps())) {
-            return false;
+    private String validateRecipe( Recipe newRecipe ) {
+        Validator val = new Validator();
+        String name = newRecipe.getName();
+        if(!val.checkString(name)) {
+            return Messages.INVALID_RECIPE.getLabel();
+        } else if( newRecipe.getIngredients().size() == 0 || !val.checkList(newRecipe.getIngredients())) {
+            return Messages.INVALID_RECIPE.getLabel();
+        } else if( newRecipe.getPreparationSteps().size() == 0 || !val.checkList(newRecipe.getPreparationSteps())) {
+            return Messages.INVALID_RECIPE.getLabel();
         } else if( newRecipe.getCookingTime() == null || newRecipe.getCookingTime() == LocalTime.of(0,0,0)) {
-            return false;
+            return Messages.INVALID_RECIPE.getLabel();
+        } else if( repository.getRecipeByName(name) != null ) {
+            return Messages.INVALID_NAME.getLabel();
         }
 
-        return true;
+        return "valid";
     }
 
-    private boolean checkList( List<String> list ) {
-        for(String i : list) {
-            if(!checkString(i)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private boolean checkString( String string) {
-        if( string.equals("") || string == null) {
-            return false;
-        } else {
-            return true;
-        }
-    }
 }
