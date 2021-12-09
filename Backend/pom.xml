@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.nmurray</groupId>
-    <artifactId>Meal-Planner-Backend</artifactId>
+    <artifactId>meal-planner</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>Meal Planner Backend</name>
-    <description>Demo project for Spring Boot</description>
+    <name>Meal Planner</name>
+    <description>A weekly meal planner app.</description>
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
