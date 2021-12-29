@@ -1,30 +1,25 @@
 import logo from './logo.png';
 import './App.css';
 import React, { Component } from 'react';
-import { BrowserRouter, Route, Redirect } from "react-router-dom";
+import {BrowserRouter, Route, Redirect, Routes} from "react-router-dom";
+import Home from "./pages/home/Home";
 
 class App extends Component {
-  render() {
-    return (
-        <BrowserRouter>
+
+    render() {
+        return (
             <div className="App">
               <header className="App-header">
-                <img src={logo} className="App-logo" alt="logo" />
-                <p>
-                  Meal Planner Client
-                </p>
-                <a
-                  className="App-link"
-                  href="https://reactjs.org"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Learn React
-                </a>
+                  <div class="w3-cell-row">
+                      <img class="w3-container w3-cell" src={logo} className="App-logo" alt="logo" />
+                      <div class="w3-container w3-cell header" >
+                          <p>What's for dinner?</p>
+                      </div>
+                  </div>
               </header>
+              <Home/>
             </div>
-        </BrowserRouter>
-    )
+        )
   }
 }
 
